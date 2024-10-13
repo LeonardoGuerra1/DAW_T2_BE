@@ -58,16 +58,12 @@ public class AutenticacionServiceImpl implements AutenticacionService {
 
     @Override
     public Date cerrarSesionUsuario(LogoutRequestDTO logoutRequestDTO) throws IOException {
-
         Date fechaLogout = null;
         Resource resource = resourceLoader.getResource("classpath:auditoria.txt");
         Path rutaArchivo = Paths.get(resource.getURI());
-
         try (BufferedWriter bw = Files.newBufferedWriter(rutaArchivo, StandardOpenOption.APPEND)) {
-
             // definir fecha
             fechaLogout = new Date();
-
             // preparar linea
             StringBuilder sb = new StringBuilder();
             sb.append(logoutRequestDTO.tipoDocumento());
@@ -75,21 +71,13 @@ public class AutenticacionServiceImpl implements AutenticacionService {
             sb.append(logoutRequestDTO.numeroDocumento());
             sb.append(";");
             sb.append(fechaLogout);
-
             // escribir linea
             bw.write(sb.toString());
             bw.newLine();
-            System.out.println(sb.toString());
-
         } catch (IOException e) {
-
             fechaLogout = null;
             throw new IOException(e);
-
         }
-
         return fechaLogout;
-
     }
-
 }

@@ -24,9 +24,7 @@ public class AutenticacionController {
 
     @PostMapping("/login")
     public LoginResponseDTO login(@RequestBody LoginRequestDTO loginRequestDTO){
-
         try {
-
             Thread.sleep(Duration.ofSeconds(5));
             String[] datosUsuario = autenticacionService.validarUsuario(loginRequestDTO);
             System.out.println("Respuesta backend: " + Arrays.toString(datosUsuario));
@@ -35,37 +33,26 @@ public class AutenticacionController {
                 return new LoginResponseDTO("01", "Error: Usuario no encontrado", "", "");
             }
             return new LoginResponseDTO("00", "", datosUsuario[0], datosUsuario[1]);
-
         } catch (Exception e) {
-
             System.out.println(e.getMessage());
             return new LoginResponseDTO("99", "Error: Ocurrió un problema", "", "");
-
         }
-
     }
 
     @PostMapping("/logout")
     public LogoutResponseDTO logout(@RequestBody LogoutRequestDTO logoutRequestDTO) {
-
         try {
-
             Thread.sleep(Duration.ofSeconds(5));
             Date fechaLogout = autenticacionService.cerrarSesionUsuario(logoutRequestDTO);
             System.out.println("Respuesta backend: " + fechaLogout);
 
             if (fechaLogout == null) {
-                return new LogoutResponseDTO(false, null, "Error: No se pudo registrar auditoría");
+                return new LogoutResponseDTO("01", null, "Error: No se pudo registrar auditoría");
             }
-            return new LogoutResponseDTO(true, fechaLogout, "");
-
-        } catch(Exception e) {
-
+            return new LogoutResponseDTO("00", fechaLogout, "");
+        } catch (Exception e) {
             System.out.println(e.getMessage());
-            return new LogoutResponseDTO(false, null, "Error: Ocurrió un problema");
-
+            return new LogoutResponseDTO("99", null, "Error: Ocurrió un problema");
         }
-
     }
-
 }
